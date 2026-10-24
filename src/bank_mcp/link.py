@@ -144,7 +144,8 @@ def link_bank(
         finally:
             await truelayer.aclose()
 
-    tokens = asyncio.run(exchange())
+    # Remember which bank and environment this nickname belongs to, so the server can rebuild its provider.
+    tokens = {**asyncio.run(exchange()), "provider_id": config.provider_id, "environment": config.environment}
     banks.save(nickname, tokens, expires_at=datetime.now(UTC) + timedelta(days=CONSENT_DAYS))
     return nickname
 

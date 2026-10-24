@@ -30,6 +30,7 @@ dependencies = [
 ]
 
 [project.scripts]
+bank-mcp = "bank_mcp.server:main"
 bank-mcp-link = "bank_mcp.link:main"
 
 [project.urls]
