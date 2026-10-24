@@ -32,3 +32,13 @@ jobs:
         run: uv run ruff format --check .
       - name: Test
         run: uv run pytest
+
+  docs:
+    name: Markdown links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --include-fragments '**/*.md'
+          fail: true
