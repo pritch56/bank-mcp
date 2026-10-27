@@ -1,5 +1,7 @@
 # bank-mcp
 
+<!-- mcp-name: io.github.pritch56/bank-mcp -->
+
 Unofficial, read-only [MCP](https://modelcontextprotocol.io) server for your own UK bank and card data, via
 [TrueLayer](https://truelayer.com) Open Banking. It can read accounts, cards, balances and transactions. It cannot
 move money: only read scopes are ever requested.
