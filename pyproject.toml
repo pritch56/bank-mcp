@@ -29,6 +29,10 @@ dependencies = [
     "tzdata>=2024.1",
 ]
 
+[project.scripts]
+bank-mcp = "bank_mcp.server:main"
+bank-mcp-link = "bank_mcp.link:main"
+
 [project.urls]
 Homepage = "https://github.com/pritch56/bank-mcp"
 Repository = "https://github.com/pritch56/bank-mcp"

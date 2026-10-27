@@ -229,6 +229,14 @@ class TrueLayerProvider(Provider):
 
     # ------------------------------------------------------------------ tokens
 
+    def _redact(self, text: str) -> str:
+        """Blank out any secret we hold before upstream text is shown to a client or log."""
+        held = [self.config.client_secret, self.config.seed_refresh_token, *(self._tokens or {}).values()]
+        for secret in held:
+            if isinstance(secret, str) and len(secret) >= 8:
+                text = text.replace(secret, "[redacted]")
+        return text
+
     def _save(self, tokens: dict[str, Any]) -> bool:
         """Persist the token set. Never raises: on failure the tokens stay in memory, the
         save is retried on the next call, and the problem is reported via pending_warning()."""
@@ -432,7 +440,7 @@ class TrueLayerProvider(Provider):
                     retry_after,
                 )
             if status == 400:
-                detail = clean_text(_error_description(resp))[:200]
+                detail = self._redact(clean_text(_error_description(resp))[:200])
                 if error == "invalid_date_range":
                     raise InvalidRequestError(f"TrueLayer rejected the date range (invalid_date_range). {detail}")
                 raise InvalidRequestError(f"TrueLayer rejected the request ({error or 'bad_request'}). {detail}")

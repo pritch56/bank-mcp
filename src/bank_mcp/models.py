@@ -197,6 +197,37 @@ class Account:
 
 
 @dataclass(frozen=True)
+class Card:
+    """A payment card on a bank consent (the TrueLayer `/cards` resource)."""
+
+    card_id: str
+    name: str
+    currency: str
+    card_type: str = "credit_card"  # "credit_card" | "charge_card"
+    card_network: str | None = None
+    last4: str | None = None
+    provider: str = ""
+    source: str = SOURCE
+
+    @classmethod
+    def from_truelayer(cls, raw: dict[str, Any], provider: str = "") -> Card:
+        """Parse one TrueLayer card object. Raises KeyError when `account_id` is missing."""
+        number = str(raw.get("partial_card_number") or "")
+        return cls(
+            card_id=str(raw["account_id"]),
+            name=clean_text(raw.get("display_name")) or "Card",
+            currency=str(raw.get("currency") or "GBP").upper(),
+            card_type="charge_card" if str(raw.get("card_type", "")).upper() == "CHARGE" else "credit_card",
+            card_network=str(raw.get("card_network") or "").upper() or None,
+            last4=number[-4:] if number else None,
+            provider=provider,
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"id": self.card_id, **asdict(self)}
+
+
+@dataclass(frozen=True)
 class Balance:
     """Card balance. `balance_minor` follows the transaction sign convention:
     NEGATIVE means the cardholder owes money on the card."""
