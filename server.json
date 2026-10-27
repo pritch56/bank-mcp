@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pritch56/bank-mcp",
+  "title": "bank-mcp",
+  "description": "Unofficial read-only MCP server for UK bank and card data via TrueLayer Open Banking",
+  "repository": {
+    "url": "https://github.com/pritch56/bank-mcp",
+    "source": "github"
+  },
+  "version": "0.1.2",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "bank-mcp",
+      "version": "0.1.2",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "TRUELAYER_CLIENT_ID", "description": "TrueLayer Console client id", "isRequired": true },
+        { "name": "TRUELAYER_CLIENT_SECRET", "description": "TrueLayer Console client secret", "isRequired": true, "isSecret": true },
+        { "name": "TRUELAYER_ENV", "description": "live (default) or sandbox", "isRequired": false }
+      ]
+    }
+  ]
+}

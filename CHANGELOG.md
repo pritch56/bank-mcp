@@ -5,6 +5,18 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.2]
+
+### Added
+
+- MCP Registry `server.json` (`io.github.pritch56/bank-mcp`) and the README `mcp-name` marker the registry checks.
+
+## [0.1.1]
+
+### Fixed
+
+- `bank-mcp --help` and `--version` now work instead of silently starting the stdio server.
+
 ## [0.1.0]
 
 ### Added

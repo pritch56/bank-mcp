@@ -42,3 +42,11 @@ jobs:
         with:
           args: --offline --no-progress --include-fragments '**/*.md'
           fail: true
+
+  server-json:
+    name: server.json schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx check-jsonschema --schemafile https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json server.json
