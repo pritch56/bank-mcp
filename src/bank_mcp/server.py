@@ -316,6 +316,16 @@ def build_server(service: BankService | None = None) -> MCPServer:
 
 
 def main() -> None:
+    import argparse
+
+    from . import __version__
+
+    parser = argparse.ArgumentParser(
+        prog="bank-mcp",
+        description="Read-only MCP server over your linked banks. Speaks MCP over stdio.",
+    )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.parse_args()
     build_server().run("stdio")
 
 
