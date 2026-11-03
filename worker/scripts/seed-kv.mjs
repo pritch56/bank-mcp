@@ -52,7 +52,8 @@ if (missing.length || !wanted.length) {
 
 const where = values.local ? ["--local"] : ["--remote"];
 const base = ["wrangler", "kv", "key"];
-const target = ["--binding", values.binding, ...where];
+const config = ["-c", join(import.meta.dirname, "..", "..", "wrangler.jsonc")];
+const target = [...config, "--binding", values.binding, ...where];
 const wrangler = (args, opts = {}) => spawnSync("npx", args, { encoding: "utf8", shell: process.platform === "win32", ...opts });
 
 // Current remote document (a missing key is fine).

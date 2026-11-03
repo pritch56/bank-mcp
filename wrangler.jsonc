@@ -1,0 +1,26 @@
+{
+  // Lives at the repo root so Cloudflare's Git build (which runs `npx wrangler deploy` from the root) finds it.
+  // The Worker's code and dependencies are in worker/.
+  "$schema": "worker/node_modules/wrangler/config-schema.json",
+  "name": "bank-mcp",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Installs worker/'s dependencies before bundling, so a fresh checkout deploys without a separate install step.
+  "build": { "command": "npm ci --prefix worker", "cwd": "." },
+  // Serve only from your own (Access-protected) custom domain; add it under "routes" below.
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  // No id: wrangler creates the KV namespace on the first deploy and binds it.
+  "kv_namespaces": [{ "binding": "TOKENS" }],
+  "vars": {
+    "TRUELAYER_ENV": "live",
+    // Cloudflare Zero Trust team name (the <team> in <team>.cloudflareaccess.com).
+    "ACCESS_TEAM_DOMAIN": "",
+    // Audience (AUD) tag of the Access application that protects this Worker.
+    "ACCESS_AUD": ""
+  }
+  // "routes": [{ "pattern": "bank-mcp.example.com", "custom_domain": true }]
+  // Secrets (set with `wrangler secret put`): TRUELAYER_CLIENT_ID, TRUELAYER_CLIENT_SECRET
+}

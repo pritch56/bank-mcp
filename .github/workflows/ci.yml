@@ -50,7 +50,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - name: Bundle (dry run)
-        run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/bundle"
+        run: npx wrangler deploy -c ../wrangler.jsonc --dry-run --outdir "$RUNNER_TEMP/bundle"
 
   docs:
     name: Markdown links
