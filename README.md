@@ -97,6 +97,11 @@ claude mcp add bank \
   -- uv run --directory /path/to/bank-mcp bank-mcp
 ```
 
+## Host it on Cloudflare Workers
+
+To run the server remotely instead of over stdio, see [worker/README.md](worker/README.md): a TypeScript Worker with
+Workers KV for tokens, protected by Cloudflare Access.
+
 ## Tools
 
 `bank-mcp` (stdio) exposes five read-only tools. Each except `list_connections` takes an optional `bank`

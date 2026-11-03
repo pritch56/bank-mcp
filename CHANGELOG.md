@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `worker/`: deploy as a Cloudflare Worker (remote MCP over Streamable HTTP) with Workers KV token storage,
+  Cloudflare Access authentication and a `seed` command to upload locally linked banks.
+
+## [Unreleased]
+
 ## [0.1.2]
 
 ### Added
