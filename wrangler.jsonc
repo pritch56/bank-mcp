@@ -20,6 +20,12 @@
     "ACCESS_TEAM_DOMAIN": "",
     // Audience (AUD) tag of the Access application that protects this Worker.
     "ACCESS_AUD": ""
+  },
+  // Required by `wrangler preview` (Workers Builds runs it for non-production branches); previews do not inherit
+  // production settings. This one is deliberately inert: no KV binding, so a preview can never read bank tokens,
+  // and empty Access settings, so it fails closed (503). Deploy for real from the production branch.
+  "previews": {
+    "vars": { "TRUELAYER_ENV": "sandbox", "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" }
   }
   // "routes": [{ "pattern": "bank-mcp.example.com", "custom_domain": true }]
   // Secrets (set with `wrangler secret put`): TRUELAYER_CLIENT_ID, TRUELAYER_CLIENT_SECRET

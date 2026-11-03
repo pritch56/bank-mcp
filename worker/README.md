@@ -43,7 +43,8 @@ npm install   # from the repo root: installs worker/ as an npm workspace
 
    You can also connect the repo to Cloudflare (Workers Builds) with the default settings: its `npx wrangler deploy`
    from the repo root picks up the root `wrangler.jsonc`; the root `package.json` makes `worker/` an npm workspace, so Cloudflare
-   installs its dependencies automatically (Workers Builds ignores the `build` option in `wrangler.jsonc`). Secrets and
+   installs its dependencies automatically (Workers Builds ignores the `build` option in `wrangler.jsonc`). Branch builds run
+   `wrangler preview`, which needs the (deliberately inert, KV-less) `previews` block already in `wrangler.jsonc`. Secrets and
    the Access vars must still be set, and `workers_dev` is off, so the Worker is reachable only through your route.
 
 4. **Protect it with Access.** In Zero Trust go to Access > Applications > Add > Self-hosted, use the same hostname,
