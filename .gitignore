@@ -42,7 +42,7 @@ __pycache__/
 .ruff_cache/
 
 # Cloudflare Worker
-worker/node_modules/
+node_modules/
 worker/.wrangler/
 .wrangler/
 .dev.vars

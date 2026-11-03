@@ -21,8 +21,7 @@ you control, and the Worker will hold your TrueLayer client secret.
 Requires Node 20+ and a Cloudflare account with a domain on Cloudflare (Access needs a hostname you control).
 
 ```bash
-cd worker
-npm install
+npm install   # from the repo root: installs worker/ as an npm workspace
 ```
 
 1. **KV namespace:** nothing to do. `wrangler.jsonc` (at the repo root) declares the `TOKENS` binding without an id, and
@@ -43,7 +42,8 @@ npm install
    ```
 
    You can also connect the repo to Cloudflare (Workers Builds) with the default settings: its `npx wrangler deploy`
-   from the repo root picks up the root `wrangler.jsonc`, which installs `worker/`'s dependencies itself. Secrets and
+   from the repo root picks up the root `wrangler.jsonc`; the root `package.json` makes `worker/` an npm workspace, so Cloudflare
+   installs its dependencies automatically (Workers Builds ignores the `build` option in `wrangler.jsonc`). Secrets and
    the Access vars must still be set, and `workers_dev` is off, so the Worker is reachable only through your route.
 
 4. **Protect it with Access.** In Zero Trust go to Access > Applications > Add > Self-hosted, use the same hostname,

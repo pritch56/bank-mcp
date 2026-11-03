@@ -1,0 +1,6 @@
+{
+  "name": "bank-mcp-root",
+  "private": true,
+  "description": "Root of the repo for Cloudflare's Git build: installs the Worker in worker/ as an npm workspace so `npx wrangler deploy` works from here. The Python package is configured in pyproject.toml.",
+  "workspaces": ["worker"]
+}
