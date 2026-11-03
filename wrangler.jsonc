@@ -8,8 +8,9 @@
   "compatibility_flags": ["nodejs_compat"],
   // Dependencies come from the root package.json (npm workspace), which Workers Builds installs automatically.
   // Note: Workers Builds ignores a `build` section here, so do not rely on one.
-  // Serve only from your own (Access-protected) custom domain; add it under "routes" below.
-  "workers_dev": false,
+  // Served at https://bank-mcp.bp-941.workers.dev/mcp, which must stay behind Cloudflare Access
+  // (Workers & Pages > bank-mcp > Access). The Worker also verifies the Access token itself and returns 503/401/403 otherwise.
+  "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": true },
   // No id: wrangler creates the KV namespace on the first deploy and binds it.
@@ -17,9 +18,9 @@
   "vars": {
     "TRUELAYER_ENV": "live",
     // Cloudflare Zero Trust team name (the <team> in <team>.cloudflareaccess.com).
-    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_TEAM_DOMAIN": "icy-sunset-0372",
     // Audience (AUD) tag of the Access application that protects this Worker.
-    "ACCESS_AUD": ""
+    "ACCESS_AUD": "9559b410d97a94ff468fe89d9d7e5ce1f4bb6b95a4f3c94d05a60c2d5f35ac11"
   },
   // Required by `wrangler preview` (Workers Builds runs it for non-production branches); previews do not inherit
   // production settings. This one is deliberately inert: no KV binding, so a preview can never read bank tokens,
