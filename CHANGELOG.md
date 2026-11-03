@@ -8,7 +8,8 @@ All notable changes to this project are documented here. The format follows
 ### Added
 
 - `worker/`: deploy as a Cloudflare Worker (remote MCP over Streamable HTTP) with Workers KV token storage,
-  Cloudflare Access authentication and a `seed` command to upload locally linked banks.
+  Cloudflare Access authentication and a `seed` command to upload locally linked banks. `wrangler.jsonc` is at the repo
+  root so Cloudflare's Git build (`npx wrangler deploy`) works unchanged.
 
 ## [Unreleased]
 

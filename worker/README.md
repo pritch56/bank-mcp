@@ -21,17 +21,13 @@ you control, and the Worker will hold your TrueLayer client secret.
 Requires Node 20+ and a Cloudflare account with a domain on Cloudflare (Access needs a hostname you control).
 
 ```bash
-cd worker
-npm install
+npm install   # from the repo root: installs worker/ as an npm workspace
 ```
 
-1. **Create the KV namespace** and paste the printed id into `wrangler.jsonc` (`kv_namespaces[0].id`):
+1. **KV namespace:** nothing to do. `wrangler.jsonc` (at the repo root) declares the `TOKENS` binding without an id, and
+   wrangler creates the namespace on the first deploy.
 
-   ```bash
-   npx wrangler kv namespace create TOKENS
-   ```
-
-2. **Set the TrueLayer credentials** as secrets (and `TRUELAYER_ENV` in `wrangler.jsonc` if you use the sandbox):
+2. **Set the TrueLayer credentials** as secrets (and `TRUELAYER_ENV` in the root `wrangler.jsonc` if you use the sandbox):
 
    ```bash
    npx wrangler secret put TRUELAYER_CLIENT_ID
@@ -42,8 +38,14 @@ npm install
    `"routes": [{ "pattern": "bank-mcp.example.com", "custom_domain": true }]`, then deploy once:
 
    ```bash
-   npx wrangler deploy
+   npm run deploy
    ```
+
+   You can also connect the repo to Cloudflare (Workers Builds) with the default settings: its `npx wrangler deploy`
+   from the repo root picks up the root `wrangler.jsonc`; the root `package.json` makes `worker/` an npm workspace, so Cloudflare
+   installs its dependencies automatically (Workers Builds ignores the `build` option in `wrangler.jsonc`). Branch builds run
+   `wrangler preview`, which needs the (deliberately inert, KV-less) `previews` block already in `wrangler.jsonc`. Secrets and
+   the Access vars must still be set, and `workers_dev` is off, so the Worker is reachable only through your route.
 
 4. **Protect it with Access.** In Zero Trust go to Access > Applications > Add > Self-hosted, use the same hostname,
    and add a policy that allows only you (or a service token for headless clients). Copy the application's
@@ -99,7 +101,7 @@ The endpoint is `https://bank-mcp.example.com/mcp`. Clients must pass Access.
 ```bash
 npm run typecheck
 npm test
-npx wrangler dev   # local; set ACCESS_* in .dev.vars, which is git-ignored
+npm run dev   # local; set ACCESS_* in ../.dev.vars (repo root), which is git-ignored
 ```
 
 ## Limits

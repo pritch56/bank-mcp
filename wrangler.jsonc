@@ -1,0 +1,32 @@
+{
+  // Lives at the repo root so Cloudflare's Git build (which runs `npx wrangler deploy` from the root) finds it.
+  // The Worker's code and dependencies are in worker/.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bank-mcp",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Dependencies come from the root package.json (npm workspace), which Workers Builds installs automatically.
+  // Note: Workers Builds ignores a `build` section here, so do not rely on one.
+  // Serve only from your own (Access-protected) custom domain; add it under "routes" below.
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  // No id: wrangler creates the KV namespace on the first deploy and binds it.
+  "kv_namespaces": [{ "binding": "TOKENS" }],
+  "vars": {
+    "TRUELAYER_ENV": "live",
+    // Cloudflare Zero Trust team name (the <team> in <team>.cloudflareaccess.com).
+    "ACCESS_TEAM_DOMAIN": "",
+    // Audience (AUD) tag of the Access application that protects this Worker.
+    "ACCESS_AUD": ""
+  },
+  // Required by `wrangler preview` (Workers Builds runs it for non-production branches); previews do not inherit
+  // production settings. This one is deliberately inert: no KV binding, so a preview can never read bank tokens,
+  // and empty Access settings, so it fails closed (503). Deploy for real from the production branch.
+  "previews": {
+    "vars": { "TRUELAYER_ENV": "sandbox", "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" }
+  }
+  // "routes": [{ "pattern": "bank-mcp.example.com", "custom_domain": true }]
+  // Secrets (set with `wrangler secret put`): TRUELAYER_CLIENT_ID, TRUELAYER_CLIENT_SECRET
+}

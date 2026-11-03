@@ -36,20 +36,16 @@ jobs:
   worker:
     name: Cloudflare Worker
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: worker
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: worker/package-lock.json
       - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
-      - name: Bundle (dry run)
+      - run: npm run typecheck --workspace worker
+      - run: npm test --workspace worker
+      - name: Bundle (dry run, from the repo root like Cloudflare's build)
         run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/bundle"
 
   docs:
