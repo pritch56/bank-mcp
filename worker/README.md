@@ -68,6 +68,10 @@ npm install   # from the repo root: installs worker/ as an npm workspace
    tokens in KV, so re-uploading an old local copy would replace a newer token with a stale one. When consent lapses
    (every 90 days), tools say `Reconnect required for '<bank>'`; relink and seed again.
 
+**Using `workers.dev` instead of a custom domain:** set `"workers_dev": true` in `wrangler.jsonc`, then in the dashboard open
+Workers & Pages > bank-mcp > **Access** > *Protect this Worker behind Access* (All traffic, a policy allowing only you). The
+AUD tag is on that Access application in Zero Trust. The endpoint is `https://<worker>.<subdomain>.workers.dev/mcp`.
+
 ## Connect a client
 
 The endpoint is `https://bank-mcp.example.com/mcp`. Clients must pass Access.
