@@ -7,6 +7,7 @@
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat"],
   // Installs worker/'s dependencies before bundling, so a fresh checkout deploys without a separate install step.
+  // Paths are relative to where wrangler is launched, so always run it from the repo root (npm run deploy does).
   "build": { "command": "npm ci --prefix worker", "cwd": "." },
   // Serve only from your own (Access-protected) custom domain; add it under "routes" below.
   "workers_dev": false,
