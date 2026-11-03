@@ -64,7 +64,8 @@ npm install   # from the repo root: installs worker/ as an npm workspace
    npm run seed -- --bank nationwide
    ```
 
-   `seed` merges into what is already in KV. Upload a bank only right after linking it: the Worker rotates refresh
+   If the namespace was created by the Git build, the repo has no id for it, so add `--namespace-id <id>` (copy it from the
+   dashboard: Storage & Databases > KV, the namespace whose name starts with the Worker name). `seed` merges into what is already in KV. Upload a bank only right after linking it: the Worker rotates refresh
    tokens in KV, so re-uploading an old local copy would replace a newer token with a stale one. When consent lapses
    (every 90 days), tools say `Reconnect required for '<bank>'`; relink and seed again.
 

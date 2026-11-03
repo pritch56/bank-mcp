@@ -6,6 +6,8 @@
  *   npm run seed -- --bank nationwide        upload one bank
  *   npm run seed -- --all                    upload every bank in the file
  *   npm run seed -- --bank monzo --file ./tokens.json --local   (use the local dev KV)
+ *   npm run seed -- --bank monzo --namespace-id <id>            (KV created by the Git build has no id in the repo;
+ *                                                                find it in the dashboard: Storage & Databases > KV)
  *
  * Only upload a bank right after (re)linking it. The Worker rotates refresh tokens in KV, so
  * re-uploading an old local copy of a bank you have not just re-linked would replace a newer
@@ -24,13 +26,14 @@ const { values } = parseArgs({
     file: { type: "string" },
     local: { type: "boolean", default: false },
     binding: { type: "string", default: "TOKENS" },
+    "namespace-id": { type: "string" },
     key: { type: "string", default: "tokens" },
     help: { type: "boolean", short: "h", default: false },
   },
 });
 
 if (values.help || (!values.all && !values.bank?.length)) {
-  console.log("usage: npm run seed -- (--bank <nickname> [--bank ...] | --all) [--file <tokens.json>] [--local]");
+  console.log("usage: npm run seed -- (--bank <nickname> [--bank ...] | --all) [--file <tokens.json>] [--namespace-id <id>] [--local]");
   process.exit(values.help ? 0 : 2);
 }
 
@@ -53,7 +56,12 @@ if (missing.length || !wanted.length) {
 const where = values.local ? ["--local"] : ["--remote"];
 const base = ["wrangler", "kv", "key"];
 const config = ["-c", join(import.meta.dirname, "..", "..", "wrangler.jsonc")];
-const target = [...config, "--binding", values.binding, ...where];
+const ns = values["namespace-id"];
+if (ns && !/^[0-9a-f]{32}$/i.test(ns)) {
+  console.error("--namespace-id must be the 32-character hex id shown in the Cloudflare dashboard (Storage & Databases > KV).");
+  process.exit(2);
+}
+const target = [...config, ...(ns ? ["--namespace-id", ns] : ["--binding", values.binding]), ...where];
 const wrangler = (args, opts = {}) => spawnSync("npx", args, { encoding: "utf8", shell: process.platform === "win32", ...opts });
 
 // Current remote document (a missing key is fine).
